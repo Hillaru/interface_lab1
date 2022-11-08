@@ -8,33 +8,37 @@ namespace interface_lab1_2
 {
     internal class Joint
     {
-        Random rand = new Random();
-        public double value;
+        Random rand = new Random(DateTime.Now.Millisecond);
+        string _value;
 
-        public Joint(string s, double exp, double plain_a, double plain_b)
+        public double value
         {
-            if (string.IsNullOrEmpty(s))
+            get 
             {
-                value = -1;
-                return;
-            }
+                if (string.IsNullOrEmpty(_value))
+                {
+                    return -1;
+                }
 
-            if (s == "эксп")
-            {
-                value = -exp * Math.Log(rand.NextDouble());
+                string[] split_str = _value.Split('-');
+                if (split_str.Length == 2)
+                {
+                    if (Double.TryParse(split_str[0], out double plain_a) && Double.TryParse(split_str[1], out double plain_b))
+                        return(rand.NextDouble() * (plain_b - plain_a) + plain_a);
+                }
+
+                if (Double.TryParse(_value, out double i) == true)
+                {
+                    return i;
+                }
+                else
+                    return -1;
             }
-            else
-            if (s == "равн")
-            {
-                value = rand.NextDouble() * (plain_b - plain_a) + plain_a;
-            }
-            else
-            if (Double.TryParse(s, out double i) == true)
-            {
-                value = i;
-            }
-            else
-                value = -1;
+        }
+
+        public Joint(string s)
+        {
+            _value = s;
         }
     }
 
@@ -52,12 +56,12 @@ namespace interface_lab1_2
 
         }
 
-        public void Set_vars(List<string> _Joints, List<List<int>> _Ways, List<double> _Way_chances, double _Error_chance, int _Error_handler_type, double _exp, double _plain_a, double _plain_b)
+        public void Set_vars(List<string> _Joints, List<List<int>> _Ways, List<double> _Way_chances, double _Error_chance, int _Error_handler_type)
         {
             Joints = new List<Joint>();
             foreach (string j in _Joints)
             {
-                Joints.Add(new Joint(j, _exp, _plain_a, _plain_b));
+                Joints.Add(new Joint(j));
             }
             Ways = new List<List<int>>(_Ways);
             Way_chances = _Way_chances;
@@ -67,6 +71,7 @@ namespace interface_lab1_2
 
         public double Calc_way()
         {
+            rand = new Random(DateTime.Now.Millisecond);
             double r = rand.NextDouble();
             double cr = 0;
             int Way_index = 0;
@@ -84,6 +89,9 @@ namespace interface_lab1_2
             int i = 0;
             while ( i < Ways[Way_index].Count )
             {
+                if (Joints[Ways[Way_index][i] - 1].value == -1)
+                    return -1;
+
                 Result_time += Joints[Ways[Way_index][i] - 1].value;
                 if (rand.NextDouble() < Error_chance)
                 {

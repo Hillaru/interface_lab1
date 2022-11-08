@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.joint1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.joint2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -63,14 +66,9 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.rptN = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.avgtexp = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.plaina = new System.Windows.Forms.TextBox();
-            this.plainb = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
@@ -93,11 +91,12 @@
             this.c8 = new System.Windows.Forms.TextBox();
             this.c7 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.result_lbl = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView2
@@ -405,12 +404,12 @@
             this.label5.TabIndex = 13;
             this.label5.Text = "1";
             // 
-            // textBox12
+            // rptN
             // 
-            this.textBox12.Location = new System.Drawing.Point(464, 223);
-            this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(136, 20);
-            this.textBox12.TabIndex = 17;
+            this.rptN.Location = new System.Drawing.Point(374, 232);
+            this.rptN.Name = "rptN";
+            this.rptN.Size = new System.Drawing.Size(136, 20);
+            this.rptN.TabIndex = 17;
             // 
             // label3
             // 
@@ -424,50 +423,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(464, 207);
+            this.label4.Location = new System.Drawing.Point(374, 216);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(128, 13);
             this.label4.TabIndex = 19;
             this.label4.Text = "Количество повторений";
-            // 
-            // avgtexp
-            // 
-            this.avgtexp.Location = new System.Drawing.Point(357, 324);
-            this.avgtexp.Name = "avgtexp";
-            this.avgtexp.Size = new System.Drawing.Size(95, 20);
-            this.avgtexp.TabIndex = 20;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(354, 282);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(98, 39);
-            this.label15.TabIndex = 21;
-            this.label15.Text = "Среднее время \r\nобработки узла с \r\nэксп законом";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(354, 355);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(118, 39);
-            this.label16.TabIndex = 23;
-            this.label16.Text = "Промежуток времени\r\nдля обработки узла\r\nс равн законом";
-            // 
-            // plaina
-            // 
-            this.plaina.Location = new System.Drawing.Point(357, 405);
-            this.plaina.Name = "plaina";
-            this.plaina.Size = new System.Drawing.Size(75, 20);
-            this.plaina.TabIndex = 22;
-            // 
-            // plainb
-            // 
-            this.plainb.Location = new System.Drawing.Point(438, 405);
-            this.plainb.Name = "plainb";
-            this.plainb.Size = new System.Drawing.Size(75, 20);
-            this.plainb.TabIndex = 24;
             // 
             // groupBox2
             // 
@@ -660,21 +620,13 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(568, 282);
+            this.button1.Location = new System.Drawing.Point(541, 216);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(139, 39);
             this.button1.TabIndex = 25;
             this.button1.Text = "Расчет";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // result_lbl
-            // 
-            this.result_lbl.AutoSize = true;
-            this.result_lbl.Location = new System.Drawing.Point(618, 331);
-            this.result_lbl.Name = "result_lbl";
-            this.result_lbl.Size = new System.Drawing.Size(0, 13);
-            this.result_lbl.TabIndex = 26;
             // 
             // comboBox1
             // 
@@ -688,23 +640,34 @@
             this.comboBox1.Size = new System.Drawing.Size(155, 21);
             this.comboBox1.TabIndex = 27;
             // 
+            // chart1
+            // 
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
+            this.chart1.Location = new System.Drawing.Point(374, 269);
+            this.chart1.Name = "chart1";
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chart1.Series.Add(series2);
+            this.chart1.Size = new System.Drawing.Size(347, 213);
+            this.chart1.TabIndex = 28;
+            this.chart1.Text = "chart1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(744, 494);
+            this.Controls.Add(this.chart1);
             this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.result_lbl);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.plainb);
-            this.Controls.Add(this.label16);
-            this.Controls.Add(this.plaina);
-            this.Controls.Add(this.label15);
-            this.Controls.Add(this.avgtexp);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox12);
+            this.Controls.Add(this.rptN);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -718,6 +681,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -759,14 +723,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.TextBox rptN;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox avgtexp;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox plaina;
-        private System.Windows.Forms.TextBox plainb;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
@@ -789,8 +748,8 @@
         private System.Windows.Forms.TextBox c8;
         private System.Windows.Forms.TextBox c7;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label result_lbl;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }
 

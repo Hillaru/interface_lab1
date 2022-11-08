@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace interface_lab1_2
 {
@@ -22,7 +18,8 @@ namespace interface_lab1_2
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            comboBox1.Text = "";
+            errc.Text = "0";
         }
 
         private void dataGridView2_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -36,6 +33,7 @@ namespace interface_lab1_2
         private void button1_Click(object sender, EventArgs e)
         {
             double i;
+            int j;
 
             List<string> Joints = new List<string>();
             foreach (var txt in groupBox1.Controls)
@@ -50,7 +48,7 @@ namespace interface_lab1_2
             {
                 List<int> cells_list = new List<int>();
                 foreach (DataGridViewCell cell in row.Cells)
-                    if (Int32.TryParse((string)cell.Value, out int j) == true)
+                    if (Int32.TryParse((string)cell.Value, out j) == true)
                         cells_list.Add(j);
                 Ways.Add(cells_list);
             }
@@ -72,25 +70,69 @@ namespace interface_lab1_2
                 default: break;
             }
 
+            double Sum = 0;
+            foreach (double ch in Way_chances)
+                Sum += ch;
+            if (Sum != 1)
+            {
+                MessageBox.Show("Некорректные данные, вероятности выбора маршрутов не дают 100% в сумме");
+                return;
+            }
+
             double Error_chance = 0;
             if (Double.TryParse(errc.Text, out i) == true)
                 Error_chance = i;
 
-            double Plain_a = 0;
-            if (Double.TryParse(plaina.Text, out i) == true)
-                Plain_a = i;
+            if (Error_chance >= 1 || Error_chance < 0)
+            {
+                MessageBox.Show("Некорректные данные, вероятность ошибки должна быть не меньше 0% и меньше 100%");
+                return;
+            }          
 
-            double Plain_b = 0;
-            if (Double.TryParse(plainb.Text, out i) == true)
-                Plain_b = i;
+            int Repeat_count = 1;
+            if (Int32.TryParse(rptN.Text, out j) == true)
+                Repeat_count = j;
 
-            double Avgtexp = 0;
-            if (Double.TryParse(avgtexp.Text, out i) == true)
-                Avgtexp = i;
+            Calculator.Set_vars(Joints, Ways, Way_chances, Error_chance, Error_handler_type);
 
-            Calculator.Set_vars(Joints, Ways, Way_chances, Error_chance, Error_handler_type, Avgtexp, Plain_a, Plain_b);
+            double[] Result = new double[Repeat_count];
+            double tmp;
+            for (int indx = 0; indx < Repeat_count; indx++)
+            {
+                tmp = Calculator.Calc_way();
+                if (tmp <= 0)
+                {
+                    MessageBox.Show("Некорректные данные, проверьте функции в узлах");
+                    return;
+                }
+                else
+                    Result[indx] = tmp;
+            }
 
-            result_lbl.Text = Calculator.Calc_way().ToString();
+            //построение гистограммы
+            chart1.Series[0].Points.Clear();
+            var K = Convert.ToInt32(1 + 3.22 * Math.Log10(Repeat_count));
+            double min = double.MaxValue, max = double.MinValue;
+            foreach (var item in Result)
+            {
+                min = (min > item) ? (item) : (min);
+                max = (max < item) ? (item) : (max);
+            }
+            double[] intervals = new double[K + 1];
+            for (var indx = 0; indx < K + 1; indx++)
+                intervals[indx] = min + (max - min) / K * indx;
+            int[] y = new int[K];
+            double[] x = new double[K];
+            for (var indx = 0; indx < intervals.Length - 1; indx++)
+            {
+                x[indx] = (intervals[indx + 1] + intervals[indx]) / 2;
+                foreach (var jndx in Result)
+                    if (jndx >= intervals[indx] && jndx < intervals[indx + 1])
+                        y[indx]++;
+            }
+            for (var indx = 0; indx < K; indx++)
+                chart1.Series[0].Points.AddXY(x[indx], y[indx]);
+
         }
     }
 }
