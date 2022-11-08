@@ -21,7 +21,7 @@ namespace interface_lab1_2
 
             if (s == "эксп")
             {
-                value = exp * Math.Log(rand.NextDouble());
+                value = -exp * Math.Log(rand.NextDouble());
             }
             else
             if (s == "равн")
@@ -29,7 +29,7 @@ namespace interface_lab1_2
                 value = rand.NextDouble() * (plain_b - plain_a) + plain_a;
             }
             else
-            if (Int32.TryParse(s, out int i) == true)
+            if (Double.TryParse(s, out double i) == true)
             {
                 value = i;
             }
@@ -84,7 +84,7 @@ namespace interface_lab1_2
             int i = 0;
             while ( i < Ways[Way_index].Count )
             {
-                Result_time += Joints[Ways[Way_index][i]].value;
+                Result_time += Joints[Ways[Way_index][i] - 1].value;
                 if (rand.NextDouble() < Error_chance)
                 {
                     switch (Error_handler_type)
