@@ -18,7 +18,7 @@ namespace interface_lab1_2
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            comboBox1.Text = "";
+            comboBox1.SelectedIndex = 2;
             errc.Text = "0";
         }
 
@@ -125,7 +125,7 @@ namespace interface_lab1_2
             double[] x = new double[K];
             for (var indx = 0; indx < intervals.Length - 1; indx++)
             {
-                x[indx] = (intervals[indx + 1] + intervals[indx]) / 2;
+                x[indx] = Math.Round((intervals[indx + 1] + intervals[indx]) / 2, 2);
                 foreach (var jndx in Result)
                     if (jndx >= intervals[indx] && jndx < intervals[indx + 1])
                         y[indx]++;
